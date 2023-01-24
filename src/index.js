@@ -37,7 +37,7 @@ function countryInput(evt) {
         oneCounryMarkup(data);
       }
 
-      if (searchQuery === '') {
+      if (!searchQuery) {
         list.innerHTML = '';
         info.innerHTML = '';
       }
@@ -70,11 +70,11 @@ function oneCounryMarkup(arr) {
     )
     .join('');
 
-  info.insertAdjacentHTML('beforeend', markup);
+  info.innerHTML = markup;
 }
 
 function createListMarkup(arr) {
-  const markup = arr
+  const listMarkup = arr
     .map(
       ({ name: { official }, flags: { svg } }) =>
         `<li>
@@ -85,5 +85,5 @@ function createListMarkup(arr) {
     )
     .join('');
 
-  list.insertAdjacentHTML('beforeend', markup);
+  list.innerHTML = listMarkup;
 }
