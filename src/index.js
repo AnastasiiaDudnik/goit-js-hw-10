@@ -14,14 +14,14 @@ input.addEventListener('input', debounce(countryInput, DEBOUNCE_DELAY));
 function countryInput(evt) {
   const searchQuery = evt.target.value.trim();
 
+  if (!searchQuery) {
+    list.innerHTML = '';
+    info.innerHTML = '';
+    return;
+  }
+
   fetchCountries(searchQuery)
     .then(data => {
-      if (!searchQuery) {
-        list.innerHTML = '';
-        info.innerHTML = '';
-        return;
-      }
-
       if (data.length > 10) {
         Notiflix.Notify.info(
           'Too many matches found. Please enter a more specific name.'
@@ -29,6 +29,7 @@ function countryInput(evt) {
       }
 
       if (data.length <= 10) {
+        info.innerHTML = '';
         createListMarkup(data);
       }
 
