@@ -9,18 +9,18 @@ const input = document.querySelector('#search-box');
 const list = document.querySelector('.country-list');
 const info = document.querySelector('.country-info');
 
-input.addEventListener('input', countryInput);
-
-// input.addEventListener('input', debounce(countryInput, DEBOUNCE_DELAY));
-// коли додаю debounce, значення searchQuery стає null і нічого не працює, не розумію чому так
+input.addEventListener('input', debounce(countryInput, DEBOUNCE_DELAY));
 
 function countryInput(evt) {
-  const searchQuery = evt.currentTarget.value.trim();
-  console.dir(evt.currentTarget.value);
+  const searchQuery = evt.target.value.trim();
 
   fetchCountries(searchQuery)
     .then(data => {
-      console.log(data);
+      if (!searchQuery) {
+        list.innerHTML = '';
+        info.innerHTML = '';
+        return;
+      }
 
       if (data.length > 10) {
         Notiflix.Notify.info(
@@ -36,14 +36,10 @@ function countryInput(evt) {
         list.innerHTML = '';
         oneCounryMarkup(data);
       }
-
-      if (!searchQuery) {
-        list.innerHTML = '';
-        info.innerHTML = '';
-      }
     })
     .catch(error => {
-      console.log(error);
+      list.innerHTML = '';
+      info.innerHTML = '';
       Notiflix.Notify.failure('Oops, there is no country with that name');
     });
 }
